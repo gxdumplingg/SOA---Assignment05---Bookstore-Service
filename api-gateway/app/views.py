@@ -141,7 +141,7 @@ def book_list(request):
                 filtered.append(b)
         books = filtered
 
-    # Phân trang: tối đa 9 sách / trang
+    # Phân trang
     try:
         page = int(request.GET.get('page', 1))
     except ValueError:

@@ -147,3 +147,14 @@ Sau khi tất cả services chạy thành công, truy cập:
 http://127.0.0.1:8000/
 ```
 Đây là API Gateway, nơi điều phối request đến các service backend khác.
+
+---
+
+# API Documentation (Swagger / OpenAPI)
+
+Tài liệu API dạng **OpenAPI 3.0** để dùng với Swagger UI / Swagger Editor nằm trong thư mục **`docs/`**:
+
+- **`docs/openapi.yaml`** – Định nghĩa đầy đủ endpoints, request/response schemas cho tất cả service (Customer, Cart, Book, Order, Payment, Shipment, Rating, Recommender, …).
+- **`docs/README.md`** – Hướng dẫn cách mở file trong [Swagger Editor](https://editor.swagger.io), chạy Swagger UI bằng Docker, hoặc tích hợp với **drf-spectacular** trong Django.
+
+Khi dùng Swagger UI, chọn đúng **Server** (port 8001–8011) tương ứng với từng nhóm API vì mỗi service chạy trên một port riêng.
