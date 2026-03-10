@@ -1,172 +1,171 @@
-# Bookstore Service
+# Bookstore Service – Microservices Architecture
 
-Project gồm 4 service Django (microservices):
+Dự án mô phỏng **hệ thống nhà sách online** được xây dựng theo kiến trúc **Microservices** sử dụng **Django + Django REST Framework**.  
+Mỗi chức năng được tách thành **service độc lập**, giao tiếp qua **HTTP REST API** và được điều phối bởi **API Gateway**.
 
-- **api-gateway** – Cổng API
-- **book-service** – Quản lý sách
-- **cart-service** – Giỏ hàng
-- **customer-service** – Khách hàng
-- **comment-rate-service** – Đánh giá sách (rating + comment)
+---
 
-## Chạy project (dùng SQLite mặc định)
+# System Architecture
+Client (Browser / API Client)
+│
+▼
+API Gateway (8000)
+│
+├── Customer Service (8001)
+├── Cart Service (8002)
+├── Book Service (8003)
+├── Staff Service (8004)
+├── Manager Service (8005)
+├── Catalog Service (8006)
+├── Order Service (8007)
+├── Pay Service (8008)
+├── Ship Service (8009)
+├── Comment-Rate Service (8010)
+└── Recommender AI Service (8011)
 
-### 1. Cài đặt dependencies
+
+---
+
+# Technology Stack
+
+- **Python 3**
+- **Django**
+- **Django REST Framework**
+- **SQLite** (development database)
+- **REST API**
+- **Microservices Architecture**
+
+---
+
+# Services Overview
+
+| Service | Description | Port |
+|------|------|------|
+| **api-gateway** | Entry point & routing requests | 8000 |
+| **customer-service** | Customer management | 8001 |
+| **cart-service** | Shopping cart management | 8002 |
+| **book-service** | Books, Categories, Publishers | 8003 |
+| **staff-service** | Staff management | 8004 |
+| **manager-service** | Manager management | 8005 |
+| **catalog-service** | Catalog aggregation | 8006 |
+| **order-service** | Order processing | 8007 |
+| **pay-service** | Payment processing | 8008 |
+| **ship-service** | Shipping service | 8009 |
+| **comment-rate-service** | Book reviews & ratings | 8010 |
+| **recommender-ai-service** | AI book recommendation | 8011 |
+
+---
+
+# Quick Start
+
+## 1. Clone Repository
 
 ```bash
+git clone https://github.com/gxdumplingg/SOA---Assignment05---Bookstore-Service.git
 cd bookstore-service
+```
+
+# Setup & Run Services
+
+## 1. Install Dependencies
+
+Di chuyển vào thư mục project và cài đặt các thư viện cần thiết:
+
+```bash
+cd /Users/lehuonggiang/Downloads/bookstore-service
 pip install -r requirements.txt
 ```
+## 2. Run All Services (SQLite)
 
-### 2. Chạy từng service (mỗi service một terminal, khác port)
+Mỗi service cần chạy trong một terminal riêng.
 
-**Terminal 1 – API Gateway (port 8000):**
+### Terminal 1 – API Gateway (8000)
 ```bash
 cd api-gateway
-python manage.py migrate
-python manage.py runserver 8000
+python3 manage.py migrate
+python3 manage.py runserver 8000
 ```
 
-**Terminal 2 – Book Service (port 8001):**
+### Terminal 2 – Customer Service (8001)
 ```bash
-cd book-service
-python manage.py migrate
-python manage.py runserver 8001
+cd ../customer-service
+python3 manage.py migrate
+python3 manage.py runserver 8001
 ```
 
-**Terminal 3 – Cart Service (port 8002):**
+### Terminal 3 – Cart Service (8002)
 ```bash
-cd cart-service
-python manage.py migrate
-python manage.py runserver 8002
+cd ../cart-service
+python3 manage.py migrate
+python3 manage.py runserver 8002
 ```
 
-**Terminal 4 – Customer Service (port 8003):**
+### Terminal 4 – Book Service (8003)
 ```bash
-cd customer-service
-python manage.py migrate
-python manage.py runserver 8003
+cd ../book-service
+python3 manage.py migrate
+python3 manage.py runserver 8003
 ```
 
-**Terminal 5 – Comment-Rate Service (port 8010):**
+### Terminal 5 – Staff Service (8004)
 ```bash
-cd comment-rate-service
-python manage.py migrate
-python manage.py runserver 8010
+cd ../staff-service
+python3 manage.py migrate
+python3 manage.py runserver 8004
 ```
 
-Sau khi chạy:
-- API Gateway: http://127.0.0.1:8000/
-- Book Service: http://127.0.0.1:8001/
-- Cart Service: http://127.0.0.1:8002/
-- Customer Service: http://127.0.0.1:8003/
-- Comment-Rate Service: http://127.0.0.1:8010/
-
----
-
-## Chuyển sang MySQL
-
-### 1. Cài MySQL và tạo database
-
-Trong MySQL (hoặc MySQL Workbench), chạy:
-
-```sql
-CREATE DATABASE api_gateway_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE book_service_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE cart_service_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE customer_service_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-### 2. Set biến môi trường rồi chạy từng service
-
-Trên Linux/macOS (thay `your_password` bằng mật khẩu MySQL):
-
+### Terminal 6 – Manager Service (8005)
 ```bash
-export DB_ENGINE=mysql
-export DB_USER=root
-export DB_PASSWORD=your_password
-export DB_HOST=127.0.0.1
-export DB_PORT=3306
+cd ../manager-service
+python3 manage.py migrate
+python3 manage.py runserver 8005
 ```
 
-Mỗi service dùng một database riêng (mặc định đã cấu hình trong code). Chạy từng service như bình thường:
-
+### Terminal 7 – Catalog Service (8006)
 ```bash
-# Terminal 1
-cd api-gateway
-export DB_NAME=api_gateway_db   # không bắt buộc, đã có mặc định
-python manage.py migrate
-python manage.py runserver 8000
-
-# Terminal 2
-cd book-service
-export DB_NAME=book_service_db
-python manage.py migrate
-python manage.py runserver 8001
-
-# Terminal 3
-cd cart-service
-export DB_NAME=cart_service_db
-python manage.py migrate
-python manage.py runserver 8002
-
-# Terminal 4
-cd customer-service
-export DB_NAME=customer_service_db
-python manage.py migrate
-python manage.py runserver 8003
+cd ../catalog-service
+python3 manage.py migrate
+python3 manage.py runserver 8006
 ```
 
-Trên Windows (CMD):
-
-```cmd
-set DB_ENGINE=mysql
-set DB_USER=root
-set DB_PASSWORD=your_password
-set DB_HOST=127.0.0.1
-set DB_PORT=3306
-set DB_NAME=api_gateway_db
-cd api-gateway
-python manage.py migrate
-python manage.py runserver 8000
-```
-
-(Làm tương tự cho từng service, đổi `DB_NAME` cho đúng.)
-
-### 3. Biến môi trường MySQL (tùy chọn)
-
-| Biến        | Mặc định              | Ý nghĩa                    |
-|------------|------------------------|----------------------------|
-| `DB_ENGINE`| (không set = SQLite)   | Set `mysql` để dùng MySQL  |
-| `DB_NAME`  | Tên DB theo từng service | Tên database              |
-| `DB_USER`  | `root`                 | User MySQL                 |
-| `DB_PASSWORD` | ``                 | Mật khẩu MySQL             |
-| `DB_HOST`  | `127.0.0.1`            | Host MySQL                 |
-| `DB_PORT`  | `3306`                 | Port MySQL                 |
-
-Nếu **không** set `DB_ENGINE=mysql`, project vẫn chạy bằng **SQLite** như cũ.
-
----
-
-## Staff và Superuser
-
-### Tạo nhân viên mẫu (Staff Service)
+### Terminal 8 – Order Service (8007)
 ```bash
-cd staff-service
-python manage.py migrate
-python manage.py create_sample_staff   # Tạo 3 nhân viên mẫu
+cd ../order-service
+python3 manage.py migrate
+python3 manage.py runserver 8007
 ```
 
-### Tạo Superuser (admin/admin123)
+### Terminal 9 – Pay Service (8008)
 ```bash
-# API Gateway (admin tại http://localhost:8000/admin/)
-cd api-gateway
-python manage.py create_superuser
-
-# Staff Service (admin tại http://localhost:8004/admin/)
-cd staff-service
-python manage.py create_superuser
+cd ../pay-service
+python3 manage.py migrate
+python3 manage.py runserver 8008
 ```
 
-### Thêm nhân viên qua giao diện
-- Vào **Thêm nhân viên** (menu) hoặc http://127.0.0.1:8000/staff/
-- Điền form và nhấn "Thêm nhân viên"
+### Terminal 10 – Ship Service (8009)
+```bash
+cd ../ship-service
+python3 manage.py migrate
+python3 manage.py runserver 8009
+```
+
+### Terminal 11 – Comment-Rate Service (8010)
+```bash
+cd ../comment-rate-service
+python3 manage.py migrate
+python3 manage.py runserver 8010
+```
+
+### Terminal 12 – Recommender AI Service (8011)
+```bash
+cd ../recommender-ai-service
+python3 manage.py migrate
+python3 manage.py runserver 8011
+```
+
+## 3. Access the Application
+Sau khi tất cả services chạy thành công, truy cập:
+```
+http://127.0.0.1:8000/
+```
+Đây là API Gateway, nơi điều phối request đến các service backend khác.
