@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Danh sách khách hàng - Bookstore{% endblock %}
+
+{% block content %}
+<div>
+    <h2 style="color: #1e40af; text-align: center; margin-bottom: 30px; font-size: 2em;">
+        Danh sách khách hàng
+    </h2>
+    
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a 
+            href="{% url 'register_customer' %}"
+            style="
+                display: inline-block;
+                padding: 12px 25px;
+                background: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: background 0.3s;
+            "
+            onmouseover="this.style.background='#1d4ed8'"
+            onmouseout="this.style.background='#2563eb'"
+        >
+            Thêm khách hàng mới
+        </a>
+    </div>
+    
+    {% if customers %}
+    <div style="overflow-x: auto;">
+        <table style="
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead>
+                <tr style="background: #2563eb; color: #ffffff;">
+                    <th style="padding: 15px; text-align: left;">ID</th>
+                    <th style="padding: 15px; text-align: left;">Họ và tên</th>
+                    <th style="padding: 15px; text-align: left;">Email</th>
+                    <th style="padding: 15px; text-align: center;">Giỏ hàng</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr style="border-bottom: 1px solid #ddd; transition: background 0.2s;" 
+                    onmouseover="this.style.background='#f8f9fa'" 
+                    onmouseout="this.style.background='white'">
+                    <td style="padding: 15px;">{{ customer.id }}</td>
+                    <td style="padding: 15px; font-weight: bold;">{{ customer.name }}</td>
+                    <td style="padding: 15px; color: #666;">{{ customer.email }}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <a href="{% url 'view_cart' %}?customer_id={{ customer.id }}"
+                            style="
+                                display: inline-block;
+                                padding: 8px 16px;
+                                background: #2563eb;
+                                color: #ffffff;
+                                text-decoration: none;
+                                border-radius: 6px;
+                                font-weight: 600;
+                                font-size: 0.9em;
+                            "
+                            onmouseover="this.style.background='#1d4ed8'"
+                            onmouseout="this.style.background='#2563eb'">
+                            Xem giỏ hàng
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+        <div style="margin-top: 20px; text-align: center; color: #6b7280;">
+        <p>Tổng số: <strong>{{ customers|length }}</strong> khách hàng</p>
+    </div>
+    {% else %}
+    <div style="
+        text-align: center;
+        padding: 60px 20px;
+        background: #eff6ff;
+        border-radius: 10px;
+        color: #6b7280;
+    ">
+        <h3 style="color: #1e40af; margin-bottom: 10px;">Chưa có khách hàng nào</h3>
+        <p>Hãy đăng ký khách hàng đầu tiên!</p>
+        <a 
+            href="{% url 'register_customer' %}"
+            style="
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 25px;
+                background: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+            "
+        >
+            Đăng ký ngay
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

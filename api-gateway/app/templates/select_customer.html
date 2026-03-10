@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Chọn khách hàng - Bookstore{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #667eea; text-align: center; margin-bottom: 30px; font-size: 2em;">
+        👤 Chọn khách hàng
+    </h2>
+    
+    {% if customers %}
+    <form method="post" style="background: #f8f9fa; padding: 30px; border-radius: 10px;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next_url }}">
+        
+        <div style="margin-bottom: 20px;">
+            <label for="customer_id" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">
+                {% if next_is_orders %}Chọn khách hàng để xem đơn hàng:{% else %}Chọn khách hàng để mua sắm:{% endif %}
+            </label>
+            <select 
+                id="customer_id" 
+                name="customer_id" 
+                required
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #ddd;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#667eea'"
+                onblur="this.style.borderColor='#ddd'"
+            >
+                <option value="">-- Chọn khách hàng --</option>
+                {% for customer in customers %}
+                <option value="{{ customer.id }}">{{ customer.name }} ({{ customer.email }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button 
+            type="submit"
+            style="
+                width: 100%;
+                padding: 15px;
+                background: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 1.1em;
+                font-weight: bold;
+                cursor: pointer;
+                transition: transform 0.2s;
+            "
+            onmouseover="this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.transform='translateY(0)'"
+        >
+            {% if next_is_orders %}📋 Xem đơn hàng{% else %}🛍️ Tiếp tục mua sắm{% endif %}
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <p style="color: #666; margin-bottom: 10px;">Chưa có tài khoản?</p>
+        <a href="{% url 'register_customer' %}" style="
+            display: inline-block;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        ">
+            ➕ Đăng ký ngay
+        </a>
+    </div>
+    {% else %}
+    <div style="
+        text-align: center;
+        padding: 60px 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        color: #666;
+    ">
+        <div style="font-size: 4em; margin-bottom: 20px;">😢</div>
+        <h3 style="color: #667eea; margin-bottom: 10px;">Chưa có khách hàng</h3>
+        <p>Vui lòng đăng ký khách hàng trước!</p>
+        <a 
+            href="{% url 'register_customer' %}"
+            style="
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 25px;
+                background: #667eea;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            "
+        >
+            ➕ Đăng ký ngay
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

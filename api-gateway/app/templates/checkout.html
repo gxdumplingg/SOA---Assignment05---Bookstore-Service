@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Thanh toán - Bookstore{% endblock %}
+
+{% block content %}
+<div>
+    <h2 style="color: #1e40af; font-size: 2em; margin-bottom: 24px;">
+        Thanh toán
+    </h2>
+
+    {% if customer %}
+    <div style="background: #eff6ff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px;">
+        <strong>Khách hàng:</strong> {{ customer.name }} ({{ customer.email }})
+    </div>
+    {% endif %}
+
+    <div style="background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(15,23,42,0.1); overflow: hidden; margin-bottom: 24px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #2563eb; color: #fff;">
+                    <th style="padding: 12px 15px; text-align: left;">Sách</th>
+                    <th style="padding: 12px 15px; text-align: center;">Đơn giá</th>
+                    <th style="padding: 12px 15px; text-align: center;">Số lượng</th>
+                    <th style="padding: 12px 15px; text-align: right;">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 12px 15px;">{{ item.book.title }} <span style="color:#666;">– {{ item.book.author }}</span></td>
+                    <td style="padding: 12px 15px; text-align: center;">{{ item.book.price|floatformat:0 }}đ</td>
+                    <td style="padding: 12px 15px; text-align: center;">{{ item.quantity }}</td>
+                    <td style="padding: 12px 15px; text-align: right; font-weight: 600;">{{ item.total|floatformat:0 }}đ</td>
+                </tr>
+                {% endfor %}
+                <tr style="background: #eff6ff;">
+                    <td colspan="3" style="padding: 16px 15px; text-align: right; font-weight: bold;">Tổng cộng:</td>
+                    <td style="padding: 16px 15px; text-align: right; font-size: 1.25em; color: #1e40af; font-weight: bold;">{{ total_price|floatformat:0 }}đ</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" action="{% url 'checkout' %}" style="background: #f8fafc; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0;">
+        {% csrf_token %}
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; color: #1e293b; margin-bottom: 8px;">Phương thức thanh toán</label>
+            <select name="payment_method" style="
+                width: 100%;
+                max-width: 320px;
+                padding: 12px 14px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 1em;
+            ">
+                <option value="CASH">Tiền mặt</option>
+                <option value="CARD">Thẻ</option>
+                <option value="BANK">Chuyển khoản</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; color: #1e293b; margin-bottom: 8px;">Phương thức giao hàng</label>
+            <select name="shipping_method" style="
+                width: 100%;
+                max-width: 320px;
+                padding: 12px 14px;
+                border: 2px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 1em;
+            ">
+                <option value="STANDARD">Giao hàng tiêu chuẩn</option>
+                <option value="EXPRESS">Giao hàng nhanh</option>
+                <option value="PICKUP">Nhận tại cửa hàng</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <button type="submit" style="
+                padding: 14px 32px;
+                background: #2563eb;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1.1em;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                Xác nhận thanh toán
+            </button>
+            <a href="{% url 'view_cart' %}" style="
+                padding: 14px 24px;
+                background: #e2e8f0;
+                color: #475569;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+            ">Quay lại giỏ hàng</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

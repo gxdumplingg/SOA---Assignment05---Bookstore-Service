@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if action == 'add' %}Thêm sách{% else %}Sửa sách{% endif %} - Staff{% endblock %}
+
+{% block content %}
+<div>
+    <h2 style="color: #1e40af; font-size: 2em; margin-bottom: 24px;">
+        {% if action == 'add' %}Thêm sách mới{% else %}Sửa sách{% endif %}
+    </h2>
+
+    <form method="post" style="max-width: 500px; background: #f8fafc; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0;">
+        {% csrf_token %}
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Tên sách *</label>
+            <input type="text" name="title" value="{{ book.title|default:'' }}" required
+                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Tác giả *</label>
+            <input type="text" name="author" value="{{ book.author|default:'' }}" required
+                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Giá (đ) *</label>
+            <input type="number" name="price" value="{{ book.price|default:'' }}" min="0" step="1000" required
+                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Mô tả</label>
+            <textarea name="description" rows="3" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">{{ book.description|default:'' }}</textarea>
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px;">Tồn kho</label>
+            <input type="number" name="stock" value="{{ book.stock|default:0 }}" min="0"
+                style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:12px;">
+            <div>
+                <label style="display:block; font-weight:600; margin-bottom:6px;">Thể loại</label>
+                <select name="category_id" style="width:100%; padding:10px; border:2px solid #e2e8f0; border-radius:8px;">
+                    <option value="">-- Chọn thể loại --</option>
+                    {% for c in categories %}
+                    <option value="{{ c.id }}" {% if book.category.id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label style="display:block; font-weight:600; margin-bottom:6px;">Nhà xuất bản</label>
+                <select name="publisher_id" style="width:100%; padding:10px; border:2px solid #e2e8f0; border-radius:8px;">
+                    <option value="">-- Chọn nhà xuất bản --</option>
+                    {% for p in publishers %}
+                    <option value="{{ p.id }}" {% if book.publisher.id == p.id %}selected{% endif %}>{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button type="submit" style="padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                {% if action == 'add' %}Thêm sách{% else %}Lưu thay đổi{% endif %}
+            </button>
+            <a href="{% url 'staff_book_list' %}" style="padding: 12px 24px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 8px; font-weight: 600;">Hủy</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

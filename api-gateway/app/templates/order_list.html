@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Đơn hàng - Bookstore{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2 style="color: #1e40af; text-align: center; margin-bottom: 8px; font-size: 2em;">
+        Danh sách đơn hàng đã đặt
+    </h2>
+    <p style="text-align: center; color: #6b7280; margin-bottom: 24px;">Đơn hàng của <strong>{{ customer_name }}</strong></p>
+
+    {% if orders %}
+    <div style="overflow-x: auto;">
+        <table style="
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead>
+                <tr style="background: #2563eb; color: #ffffff;">
+                    <th style="padding: 15px; text-align: left;">Mã đơn</th>
+                    <th style="padding: 15px; text-align: center;">Trạng thái</th>
+                    <th style="padding: 15px; text-align: center;">Số lượng</th>
+                    <th style="padding: 15px; text-align: center;">Ngày đặt</th>
+                    <th style="padding: 15px; text-align: right;">Tổng tiền</th>
+                    <th style="padding: 15px; text-align: center;">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr style="border-bottom: 1px solid #ddd; transition: background 0.2s;"
+                    onmouseover="this.style.background='#f8f9fa'"
+                    onmouseout="this.style.background='white'">
+                    <td style="padding: 15px; font-weight: bold;">#{{ order.id }}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <span class="status-{{ order.status }}">
+                            {{ order.status }}
+                        </span>
+                    </td>
+                    <td style="padding: 15px; text-align: center;">{{ order.total_quantity }}</td>
+                    <td style="padding: 15px; text-align: center; color: #666;">{{ order.created_at_formatted }}</td>
+                    <td style="padding: 15px; text-align: right; font-weight: bold; color: #1e40af;">{{ order.total_amount|floatformat:0 }}đ</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <a href="{% url 'order_detail' order.id %}" style="
+                            display: inline-block;
+                            padding: 8px 16px;
+                            background: #2563eb;
+                            color: #ffffff;
+                            text-decoration: none;
+                            border-radius: 6px;
+                            font-weight: 600;
+                        ">Xem chi tiết</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center; color: #6b7280;">
+        <p>Tổng số: <strong>{{ orders|length }}</strong> đơn hàng</p>
+    </div>
+    {% else %}
+    <div style="
+        text-align: center;
+        padding: 60px 20px;
+        background: #eff6ff;
+        border-radius: 10px;
+        color: #6b7280;
+    ">
+        <h3 style="color: #1e40af; margin-bottom: 10px;">Chưa có đơn hàng nào</h3>
+        <p>Đơn hàng sẽ hiển thị sau khi bạn thanh toán từ giỏ hàng.</p>
+        <a href="{% url 'home' %}"
+            style="
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 25px;
+                background: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+            ">Về trang chủ</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

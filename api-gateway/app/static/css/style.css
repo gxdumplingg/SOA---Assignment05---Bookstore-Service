@@ -1,0 +1,4 @@
+.status-PENDING { background:#fef3c7; color:#92400e; padding:4px 12px; border-radius:6px; font-weight:600; font-size:0.9em; display:inline-block; }
+.status-PAID { background:#d1fae5; color:#065f46; padding:4px 12px; border-radius:6px; font-weight:600; font-size:0.9em; display:inline-block; }
+.status-SHIPPED { background:#dbeafe; color:#1e40af; padding:4px 12px; border-radius:6px; font-weight:600; font-size:0.9em; display:inline-block; }
+.status-CANCELLED { background:#fee2e2; color:#991b1b; padding:4px 12px; border-radius:6px; font-weight:600; font-size:0.9em; display:inline-block; }

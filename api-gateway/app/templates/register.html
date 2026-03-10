@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Đăng ký khách hàng - Bookstore{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2 style="color: #1e40af; text-align: center; margin-bottom: 30px; font-size: 2em;">
+        Đăng ký khách hàng
+    </h2>
+    
+    <form method="post" style="background: #eff6ff; padding: 30px; border-radius: 10px;">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 16px;">
+            <label for="name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #111827;">
+                Tên ngắn (nickname): <span style="color: red;">*</span>
+            </label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required
+                placeholder="Ví dụ: Giang"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#2563eb'"
+                onblur="this.style.borderColor='#d1d5db'"
+            >
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label for="full_name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #111827;">
+                Họ và tên đầy đủ:
+            </label>
+            <input 
+                type="text" 
+                id="full_name" 
+                name="full_name" 
+                placeholder="Ví dụ: Nguyễn Văn A"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#2563eb'"
+                onblur="this.style.borderColor='#d1d5db'"
+            >
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="email" style="display: block; margin-bottom: 8px; font-weight: bold; color: #111827;">
+                Email: <span style="color: red;">*</span>
+            </label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required
+                placeholder="example@email.com"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#2563eb'"
+                onblur="this.style.borderColor='#d1d5db'"
+            >
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label for="line1" style="display: block; margin-bottom: 8px; font-weight: bold; color: #111827;">
+                Địa chỉ:
+            </label>
+            <input 
+                type="text" 
+                id="line1" 
+                name="line1" 
+                placeholder="Số nhà, đường..."
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 5px;
+                    font-size: 1em;
+                    transition: border-color 0.3s;
+                "
+                onfocus="this.style.borderColor='#2563eb'"
+                onblur="this.style.borderColor='#d1d5db'"
+            >
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 24px;">
+            <div>
+                <label for="city" style="display: block; margin-bottom: 6px; font-weight: 600; color: #111827;">
+                    Thành phố
+                </label>
+                <input type="text" id="city" name="city" style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 5px;">
+            </div>
+            <div>
+                <label for="state" style="display: block; margin-bottom: 6px; font-weight: 600; color: #111827;">
+                    Quận / Huyện
+                </label>
+                <input type="text" id="state" name="state" style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 5px;">
+            </div>
+            <div>
+                <label for="postal_code" style="display: block; margin-bottom: 6px; font-weight: 600; color: #111827;">
+                    Mã bưu điện
+                </label>
+                <input type="text" id="postal_code" name="postal_code" style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 5px;">
+            </div>
+            <div>
+                <label for="country" style="display: block; margin-bottom: 6px; font-weight: 600; color: #111827;">
+                    Quốc gia
+                </label>
+                <input type="text" id="country" name="country" value="Việt Nam" style="width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 5px;">
+            </div>
+        </div>
+
+        <button 
+            type="submit"
+            style="
+                width: 100%;
+                padding: 15px;
+                background: #2563eb;
+                color: #ffffff;
+                border: none;
+                border-radius: 8px;
+                font-size: 1.1em;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s, background 0.2s;
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.background='#1d4ed8'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.background='#2563eb'"
+        >
+            Đăng ký ngay
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'customer_list' %}" style="color: #2563eb; text-decoration: underline;">
+            Xem danh sách khách hàng đã đăng ký
+        </a>
+    </div>
+</div>
+{% endblock %}

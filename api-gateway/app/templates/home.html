@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Trang chủ - Bookstore{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px 0;">
+    <h2 style="color: #1e40af; font-size: 2em; margin-bottom: 20px;">
+        Chào mừng đến với Bookstore
+    </h2>
+    
+    <p style="font-size: 1.2em; color: #4b5563; margin-bottom: 40px;">
+        Hệ thống quản lý nhà sách với kiến trúc microservices
+    </p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <a href="{% url 'select_customer' %}" style="
+            display: block;
+            padding: 20px 32px;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
+        " onmouseover="this.style.transform='scale(1.04)'; this.style.background='#1d4ed8'" onmouseout="this.style.transform='scale(1)'; this.style.background='#2563eb'">
+            Mua sắm
+        </a>
+        
+        <a href="{% url 'book_list' %}" style="
+            display: block;
+            padding: 20px 32px;
+            background: #60a5fa;
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.38);
+        " onmouseover="this.style.transform='scale(1.04)'; this.style.background='#3b82f6'" onmouseout="this.style.transform='scale(1)'; this.style.background='#60a5fa'">
+            Xem sách
+        </a>
+        
+        <a href="{% url 'register_customer' %}" style="
+            display: block;
+            padding: 20px 32px;
+            background: #93c5fd;
+            color: #111827;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 14px rgba(147, 197, 253, 0.6);
+        " onmouseover="this.style.transform='scale(1.04)'; this.style.background='#60a5fa'" onmouseout="this.style.transform='scale(1)'; this.style.background='#93c5fd'">
+            Đăng ký KH
+        </a>
+        
+        <a href="{% url 'customer_list' %}" style="
+            display: block;
+            padding: 20px 32px;
+            background: #dbeafe;
+            color: #1e3a8a;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 14px rgba(191, 219, 254, 0.6);
+        " onmouseover="this.style.transform='scale(1.04)'; this.style.background='#bfdbfe'" onmouseout="this.style.transform='scale(1)'; this.style.background='#dbeafe'">
+            Danh sách khách hàng
+        </a>
+    </div>
+    
+    <div style="margin-top: 50px; padding: 20px; background: #eff6ff; border-radius: 10px;">
+        <h3 style="color: #1e40af; margin-bottom: 15px;">Các Service đang chạy (dự kiến):</h3>
+        <ul style="list-style: none; line-height: 2; text-align: left; max-width: 360px; margin: 0 auto;">
+            <li><strong>API Gateway</strong> - Port 8000</li>
+            <li><strong>Customer Service</strong> - Port 8001</li>
+            <li><strong>Cart Service</strong> - Port 8002</li>
+            <li><strong>Book Service</strong> - Port 8003</li>
+            <li><strong>Staff Service</strong> - Port 8004</li>
+            <li><strong>Manager Service</strong> - Port 8005</li>
+            <li><strong>Catalog Service</strong> - Port 8006</li>
+            <li><strong>Order Service</strong> - Port 8007</li>
+            <li><strong>Pay Service</strong> - Port 8008</li>
+            <li><strong>Ship Service</strong> - Port 8009</li>
+            <li><strong>Comment-Rate Service</strong> - Port 8010</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

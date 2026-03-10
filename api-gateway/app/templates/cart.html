@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Giỏ hàng - Bookstore{% endblock %}
+
+{% block content %}
+<div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="color: #1e40af; font-size: 2em; margin: 0;">
+            Giỏ hàng
+        </h2>
+        <a href="{% url 'book_list' %}" style="
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        ">
+            Tiếp tục mua sắm
+        </a>
+    </div>
+    
+    {% if customer %}
+    <div style="
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    ">
+        <strong>Khách hàng:</strong> {{ customer.name }} ({{ customer.email }})
+    </div>
+    {% endif %}
+    
+    {% if cart_items %}
+    <div style="overflow-x: auto;">
+        <table style="
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(15,23,42,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+        ">
+            <thead>
+                <tr style="background: #2563eb; color: #ffffff;">
+                    <th style="padding: 15px; text-align: left;">Sách</th>
+                    <th style="padding: 15px; text-align: center;">Đơn giá</th>
+                    <th style="padding: 15px; text-align: center;">Số lượng</th>
+                    <th style="padding: 15px; text-align: right;">Thành tiền</th>
+                    <th style="padding: 15px; text-align: center;">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 15px;">
+                        <strong style="color: #1e40af;">{{ item.book.title }}</strong>
+                        <br>
+                        <span style="color: #666; font-size: 0.9em;">{{ item.book.author }}</span>
+                    </td>
+                    <td style="padding: 15px; text-align: center;">
+                        {{ item.book.price|floatformat:0 }}đ
+                    </td>
+                    <td style="padding: 15px; text-align: center;">
+                        <div style="display: inline-flex; align-items: center; gap: 0; border: 2px solid #ddd; border-radius: 8px; overflow: hidden;">
+                            {% if item.quantity > 1 %}
+                            <form method="post" action="{% url 'update_cart_item' cart_id item.id %}" style="margin: 0;">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                                <button type="submit" style="
+                                    width: 36px; height: 36px;
+                                    background: #e5e7eb;
+                                    color: #374151;
+                                    border: none;
+                                    font-size: 1.2em;
+                                    font-weight: bold;
+                                    cursor: pointer;
+                                    line-height: 1;
+                                " title="Giảm">−</button>
+                            </form>
+                            {% else %}
+                            <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: #f3f4f6; color: #9ca3af; font-weight: bold;">−</span>
+                            {% endif %}
+                            <span style="min-width: 40px; padding: 0 10px; font-weight: bold; text-align: center;">{{ item.quantity }}</span>
+                            {% if item.quantity < item.book.stock|default:999 %}
+                            <form method="post" action="{% url 'update_cart_item' cart_id item.id %}" style="margin: 0;">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="{{ item.quantity|add:1 }}">
+                                <button type="submit" style="
+                                    width: 36px; height: 36px;
+                                    background: #2563eb;
+                                    color: #fff;
+                                    border: none;
+                                    font-size: 1.2em;
+                                    font-weight: bold;
+                                    cursor: pointer;
+                                    line-height: 1;
+                                " title="Tăng">+</button>
+                            </form>
+                            {% else %}
+                            <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: #e5e7eb; color: #9ca3af; font-weight: bold;">+</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td style="padding: 15px; text-align: right; color: #111827; font-weight: bold;">
+                        {{ item.total|floatformat:0 }}đ
+                    </td>
+                    <td style="padding: 15px; text-align: center;">
+                        <form method="post" action="{% url 'remove_from_cart' cart_id item.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button 
+                                type="submit"
+                                style="
+                                    padding: 8px 15px;
+                                    background: #eff6ff;
+                                    color: #1e40af;
+                                    border: 1px solid #bfdbfe;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                    font-weight: 600;
+                                "
+                                onclick="return confirm('Bạn có chắc muốn xóa sách này?')"
+                            >
+                                Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr style="background: #eff6ff;">
+                    <td colspan="3" style="padding: 20px; text-align: right; font-size: 1.2em; font-weight: bold;">
+                        Tổng cộng:
+                    </td>
+                    <td style="padding: 20px; text-align: right; font-size: 1.5em; color: #1e40af; font-weight: bold;">
+                        {{ total_price|floatformat:0 }}đ
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="text-align: right; margin-top: 20px;">
+        <a href="{% url 'checkout' %}" style="
+            display: inline-block;
+            padding: 15px 40px;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+        ">
+            Thanh toán
+        </a>
+    </div>
+    {% else %}
+    <div style="
+        text-align: center;
+        padding: 60px 20px;
+        background: #eff6ff;
+        border-radius: 10px;
+        color: #6b7280;
+    ">
+        <h3 style="color: #1e40af; margin-bottom: 10px;">Giỏ hàng trống</h3>
+        <p>Hãy thêm sách vào giỏ hàng!</p>
+        <a 
+            href="{% url 'book_list' %}"
+            style="
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 25px;
+                background: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            "
+        >
+            Xem danh sách sách
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
