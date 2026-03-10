@@ -3,28 +3,6 @@
 Dự án mô phỏng **hệ thống nhà sách online** được xây dựng theo kiến trúc **Microservices** sử dụng **Django + Django REST Framework**.  
 Mỗi chức năng được tách thành **service độc lập**, giao tiếp qua **HTTP REST API** và được điều phối bởi **API Gateway**.
 
----
-
-# System Architecture
-Client (Browser / API Client)
-│
-▼
-API Gateway (8000)
-│
-├── Customer Service (8001)
-├── Cart Service (8002)
-├── Book Service (8003)
-├── Staff Service (8004)
-├── Manager Service (8005)
-├── Catalog Service (8006)
-├── Order Service (8007)
-├── Pay Service (8008)
-├── Ship Service (8009)
-├── Comment-Rate Service (8010)
-└── Recommender AI Service (8011)
-
-
----
 
 # Technology Stack
 
